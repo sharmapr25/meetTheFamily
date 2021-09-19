@@ -1,3 +1,4 @@
+const { ChildAdditionFailedError } = require("./error");
 const MemberNotFoundError = require("./error/MemberNotFoundError");
 const Member = require("./Member");
 
@@ -14,6 +15,9 @@ class Family{
     const member = this.members[mother.name];
     if(!member){
       throw new MemberNotFoundError();
+    }
+    if(!member.isFemale()){
+      throw new ChildAdditionFailedError();
     }
     if(member.spouse){
       const newMember = new Member(name, gender, [member.spouse, member]);
