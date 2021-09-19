@@ -4,6 +4,8 @@ const gender = require('./src/gender');
 
 const kingShan = new Member('King Shan', gender.M)
 const queenAnga = new Member('Queen Anga', gender.F);
+kingShan.addSpouse(queenAnga);
+queenAnga.addSpouse(kingShan);
 
 const chit = new Member('Chit', gender.M, [kingShan, queenAnga]);
 
