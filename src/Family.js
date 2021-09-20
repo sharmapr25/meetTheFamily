@@ -29,6 +29,9 @@ class Family{
     return this.members[memberName];
   }
 
+  getRelationship(member, relationship){
+    return relationship.of(this.members, member);
+  }
 }
 
 module.exports = Family;

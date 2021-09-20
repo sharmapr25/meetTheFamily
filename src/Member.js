@@ -20,8 +20,27 @@ class Member {
     this._spouse = spouse;
   }
 
-  isFemale(){
+  isFemale() {
     return this._gender === gender.F;
+  }
+
+  _hasParents(){
+    return this._father && this._mother;
+  }
+
+  isSameMember(anotherMember){
+    return this._name === anotherMember._name && this._gender === anotherMember._gender;
+  }
+
+  isSiblingOf(anotherMember) {
+    if(this.isSameMember(anotherMember)) {
+      return false;
+    }
+    const doesBothHaveParent = this._hasParents() && anotherMember._hasParents();
+    if (doesBothHaveParent) {
+      return this._father.isSameMember(anotherMember._father) && this._mother.isSameMember(anotherMember._mother);
+    }
+    return false;
   }
 }
 

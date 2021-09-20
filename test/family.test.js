@@ -2,6 +2,7 @@ const {MemberNotFoundError, ChildAdditionFailedError} = require('../src/error/in
 const Family = require('../src/Family');
 const gender = require("../src/gender");
 const Member = require("../src/Member");
+const relationship = require('../src/relationship');
 
 describe('addChild', () => {
   it("should add Chitra as Aria's child when aria is already member of family tree", () => {
@@ -42,4 +43,44 @@ describe('addChild', () => {
        ChildAdditionFailedError
      );
    });
+});
+
+describe('getRelationship', () => {
+  it('should return asva when ask for atya siblings', () => {
+    const family = new Family();
+
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+    kingShan.addSpouse(queenAnga);
+    queenAnga.addSpouse(kingShan);
+
+    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
+    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+
+    [kingShan, queenAnga, atya, asva].forEach(member => family.addMember(member));
+
+    const atyaSiblings = family.getRelationship(atya, relationship.SIBLINGS);
+    expect(atyaSiblings).toEqual([asva]);
+  });
+
+  it("should return asva and aria when satya has those two siblings", () => {
+    const family = new Family();
+
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+    kingShan.addSpouse(queenAnga);
+    queenAnga.addSpouse(kingShan);
+
+    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
+    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.F, [kingShan, queenAnga]);
+
+
+    [kingShan, queenAnga, atya, asva, satya].forEach((member) =>
+      family.addMember(member)
+    );
+
+    const satyaSiblings = family.getRelationship(satya, relationship.SIBLINGS);
+    expect(satyaSiblings).toEqual([atya, asva]);
+  });
 });
