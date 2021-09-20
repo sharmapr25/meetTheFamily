@@ -207,4 +207,6 @@ describe('getRelationship', () => {
 
     expect(atyaSisterInLaws).toEqual([krpi, satya]);
   });
+
+
 });
