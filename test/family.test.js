@@ -206,6 +206,51 @@ describe('getRelationship', () => {
     expect(yodhanMaternalAunties).toEqual([tritha]);
   })
 
+  it("should return tritha as paternal-aunt for yodhan as she is sister of his father jaya", () => {
+    const chit = new Member("Chit", gender.M);
+    const amba = new Member("Amba", gender.F);
+    const tritha = new Member("Tritha", gender.F, [chit, amba]);
+    const jaya = new Member("Jaya", gender.M, [chit, amba]);
+    const dritha = new Member("Dritha", gender.F);
+    const yodhan = new Member("Yodhan", gender.M, [jaya, dritha]);
+
+    jaya.addSpouse(dritha);
+    dritha.addSpouse(jaya);
+
+    const family = createFamilyTree([chit, amba, dritha, tritha, jaya, yodhan]);
+    const yodhanPaternalAunties = family.getRelationship(yodhan, relationship.PATERNAL_AUNT);
+    const yodhanMaternalAunties = family.getRelationship(yodhan, relationship.MATERNAL_AUNT);
+
+    expect(yodhanMaternalAunties).toEqual([]);
+    expect(yodhanPaternalAunties).toEqual([tritha]);
+  });
+
+  it("should return ish as paternal-uncle for yodhan as he is brother of his father jaya", () => {
+    const chit = new Member("Chit", gender.M);
+    const amba = new Member("Amba", gender.F);
+    const tritha = new Member("Tritha", gender.F, [chit, amba]);
+    const ish = new Member("Ish", gender.M, [chit, amba]);
+    const jaya = new Member("Jaya", gender.M, [chit, amba]);
+    const dritha = new Member("Dritha", gender.F);
+    const yodhan = new Member("Yodhan", gender.M, [jaya, dritha]);
+
+    jaya.addSpouse(dritha);
+    dritha.addSpouse(jaya);
+
+    const family = createFamilyTree([chit, amba, dritha, tritha, jaya, yodhan, ish]);
+    const yodhanPaternalAunties = family.getRelationship(
+      yodhan,
+      relationship.PATERNAL_AUNT
+    );
+    const yodhanPaternalUncles = family.getRelationship(
+      yodhan,
+      relationship.PATERNAL_UNCLE
+    );
+
+    expect(yodhanPaternalUncles).toEqual([ish]);
+    expect(yodhanPaternalAunties).toEqual([tritha]);
+  });
+
 });
 
 
