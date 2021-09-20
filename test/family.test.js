@@ -60,6 +60,7 @@ describe('getRelationship', () => {
     [kingShan, queenAnga, atya, asva].forEach(member => family.addMember(member));
 
     const atyaSiblings = family.getRelationship(atya, relationship.SIBLINGS);
+
     expect(atyaSiblings).toEqual([asva]);
   });
 
@@ -81,6 +82,46 @@ describe('getRelationship', () => {
     );
 
     const satyaSiblings = family.getRelationship(satya, relationship.SIBLINGS);
+
     expect(satyaSiblings).toEqual([atya, asva]);
+  });
+
+  it("should return asva when ask for king shan's son", () => {
+    const family = new Family();
+
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+    kingShan.addSpouse(queenAnga);
+    queenAnga.addSpouse(kingShan);
+
+    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+
+    [kingShan, queenAnga, asva].forEach((member) =>
+      family.addMember(member)
+    );
+
+    const kingShanSon = family.getRelationship(kingShan, relationship.SON);
+
+    expect(kingShanSon).toEqual([asva]);
+  });
+
+  it("should return chit and vich when ask for king shan sons and king shan has three children", () => {
+    const family = new Family();
+
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+    kingShan.addSpouse(queenAnga);
+    queenAnga.addSpouse(kingShan);
+
+    const chit = new Member("Chit", gender.M, [kingShan, queenAnga]);
+    const vich = new Member("Vich", gender.M, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.F, [kingShan, queenAnga]);
+
+
+    [kingShan, queenAnga, chit, vich, satya].forEach((member) => family.addMember(member));
+
+    const kingShanSons = family.getRelationship(kingShan, relationship.SON);
+
+    expect(kingShanSons).toEqual([chit, vich]);
   });
 });

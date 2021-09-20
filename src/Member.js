@@ -42,6 +42,14 @@ class Member {
     }
     return false;
   }
+
+  isChildOf(parentMembertoCheck){
+    if (this._hasParents()){
+      return this._father.isSameMember(parentMembertoCheck) ||this._mother.isSameMember(parentMembertoCheck);
+    }
+
+    return false;
+  }
 }
 
 module.exports = Member;
