@@ -6,10 +6,15 @@ const getSons = (members, currentMember) => {
   return Object.values(members).filter(member => !member.isFemale() && member.isChildOf(currentMember));
 }
 
+const getDaughters = (members, currentMember) => {
+  return Object.values(members).filter(member => member.isFemale() && member.isChildOf(currentMember));
+}
+
 
 const relationship = {
   SIBLINGS: {of: getSiblings},
   SON: {of: getSons},
+  DAUGHTER: {of:getDaughters}
 }
 Object.freeze(relationship);
 

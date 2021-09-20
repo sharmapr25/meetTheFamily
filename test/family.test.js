@@ -124,4 +124,34 @@ describe('getRelationship', () => {
 
     expect(kingShanSons).toEqual([chit, vich]);
   });
+
+  it("should return empty list when asva does not have any daughter", () => {
+    const family = new Family();
+    const asva = new Member("Asva", gender.M);
+    family.addMember(asva);
+
+    const asvaDaughters = family.getRelationship(asva, relationship.DAUGHTER);
+
+    expect(asvaDaughters).toEqual([]);
+  });
+
+  it("should return satya when ask for king shan daugthers and king shan has three children", () => {
+    const family = new Family();
+
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+    kingShan.addSpouse(queenAnga);
+    queenAnga.addSpouse(kingShan);
+
+    const chit = new Member("Chit", gender.M, [kingShan, queenAnga]);
+    const vich = new Member("Vich", gender.M, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.F, [kingShan, queenAnga]);
+
+    [kingShan, queenAnga, chit, vich, satya].forEach((member) =>
+      family.addMember(member)
+    );
+
+    const kingShanDaughters = family.getRelationship(kingShan, relationship.DAUGHTER);
+    expect(kingShanDaughters).toEqual([satya]);
+  });
 });
