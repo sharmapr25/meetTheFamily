@@ -1,15 +1,16 @@
-const brotherInLaw = require("./relationDict/BrotherInLaw");
-const daughter = require("./relationDict/Daughter");
+const Child = require("./relationDict/Child");
+const SiblingInLaw = require("./relationDict/SiblingInLaw");
 const siblings = require("./relationDict/Siblings");
-const sisterInLaw = require("./relationDict/SisterInLaw");
-const son = require("./relationDict/Son");
+
+const femaleValidation = (member) => member.isFemale();
+const maleValidation = (member) => !member.isFemale();
 
 const relationship = {
   SIBLINGS: siblings,
-  SON: son,
-  DAUGHTER: daughter,
-  SISTER_IN_LAW: sisterInLaw,
-  BROTHER_IN_LAW: brotherInLaw
+  SON: new Child(maleValidation),
+  DAUGHTER: new Child(femaleValidation),
+  SISTER_IN_LAW: new SiblingInLaw(femaleValidation),
+  BROTHER_IN_LAW: new SiblingInLaw(maleValidation)
 };
 Object.freeze(relationship);
 
