@@ -178,7 +178,7 @@ describe('getRelationship', () => {
     expect(atyaSisterInLaws).toEqual([satvy, krpi]);
   });
 
-  it("should return satya and krpi as atya sister-in-law when satya is spouse of atya brother and krpi is her spouse sister", () => {
+  it("should return satya and krpi as atya sister-in-law when satya is spouse of atya brother and krpi is sister of her spouse", () => {
     const family = new Family();
     const kingShan = new Member("King Shan", gender.M);
     const queenAnga = new Member("Queen Anga", gender.F);
@@ -205,8 +205,32 @@ describe('getRelationship', () => {
       relationship.SISTER_IN_LAW
     );
 
-    expect(atyaSisterInLaws).toEqual([krpi, satya]);
+    expect(atyaSisterInLaws).toEqual([satya, krpi]);
   });
 
 
+});
+
+it("should return asva as asva is brother of krpi husband", () => {
+  const family = new Family();
+  const kingShan = new Member("King Shan", gender.M);
+  const queenAnga = new Member("Queen Anga", gender.F);
+
+  const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+  const vyas = new Member("Vyas", gender.M, [kingShan, queenAnga]);
+  const krpi = new Member("Krpi", gender.F);
+
+  vyas.addSpouse(krpi);
+  krpi.addSpouse(vyas);
+
+  [kingShan, queenAnga, asva, vyas, krpi].forEach((member) =>
+    family.addMember(member)
+  );
+
+  const krpiBrotherInLaws = family.getRelationship(
+    krpi,
+    relationship.BROTHER_IN_LAW
+  );
+
+  expect(krpiBrotherInLaws).toEqual([asva]);
 });

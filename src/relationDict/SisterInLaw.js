@@ -1,28 +1,18 @@
 class SisterInLawRelation {
-
-  _getSpouseSisters = (members, currentMember) => {
-    return Object.values(members).filter(
-      (member) => member.isFemale() && currentMember.spouse.isSiblingOf(member)
-    );
+  _isBrotherWife(currentMember, member){
+    return member.spouse && member.spouse.isSiblingOf(currentMember);
   }
-
-  _getBrothersWife = (members, currentMember) => {
-    return Object.values(members).filter(member => {
-      if(member.isFemale() && member.spouse){
-        return currentMember.isSiblingOf(member.spouse);
-      }
-      return false;
-    });
+  _isSpouseSister(currentMember, member){
+    return currentMember.spouse && currentMember.spouse.isSiblingOf(member);
   }
 
   of(members, currentMember) {
-    let sisterInLaws = [];
-    if (currentMember.spouse) {
-      const spouseSisters = this._getSpouseSisters(members, currentMember);
-      sisterInLaws = [...spouseSisters];
-    }
-    const brothersWife = this._getBrothersWife(members, currentMember);
-    return [...sisterInLaws, ...brothersWife];
+    return Object.values(members).filter(member => {
+      if(member.isFemale()){
+        return this._isBrotherWife(currentMember, member) || this._isSpouseSister(currentMember, member);
+      }
+      return false;
+    })
   }
 }
 
