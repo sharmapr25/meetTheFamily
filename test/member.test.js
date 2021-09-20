@@ -80,3 +80,21 @@ describe('isChildOf', () => {
    expect(aria.isChildOf(kingShan)).toBeFalsy();
  });
 });
+
+describe("getParentBasedOnValidation", () => {
+  const amba = new Member("Amba", gender.F);
+  const jaya = new Member("Jaya", gender.M);
+  amba.addSpouse(jaya);
+  jaya.addSpouse(amba);
+  const yodhan = new Member('Yodhan', gender.M, [jaya, amba]);
+
+  it('should return amba for given member yodhan with validation of getting mother', () => {
+    const parent = yodhan.getParentBasedOnValidation((parent) => parent.isFemale())
+    expect(parent).toEqual(amba);
+  })
+
+  it("should return jaya for given member yodhan with validation of getting father", () => {
+    const parent = yodhan.getParentBasedOnValidation((parent) =>!parent.isFemale());
+    expect(parent).toEqual(jaya);
+  });
+});

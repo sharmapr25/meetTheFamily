@@ -60,6 +60,10 @@ class Member {
 
     return false;
   }
+
+  getParentBasedOnValidation(validation){
+    return [this._father, this._mother].find(parent => validation(parent));
+  }
 }
 
 module.exports = Member;

@@ -208,29 +208,53 @@ describe('getRelationship', () => {
     expect(atyaSisterInLaws).toEqual([satya, krpi]);
   });
 
+  it("should return asva as asva is brother of krpi husband", () => {
+    const family = new Family();
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+
+    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+    const vyas = new Member("Vyas", gender.M, [kingShan, queenAnga]);
+    const krpi = new Member("Krpi", gender.F);
+
+    vyas.addSpouse(krpi);
+    krpi.addSpouse(vyas);
+
+    [kingShan, queenAnga, asva, vyas, krpi].forEach((member) =>
+      family.addMember(member)
+    );
+
+    const krpiBrotherInLaws = family.getRelationship(
+      krpi,
+      relationship.BROTHER_IN_LAW
+    );
+
+    expect(krpiBrotherInLaws).toEqual([asva]);
+  });
+
+  it("should return tritha as maternal-aunt for yodhan as she is sister of his mother dritha",
+  () => {
+    const family = new Family();
+    const chit = new Member("Chit", gender.M);
+    const amba = new Member("Amba", gender.F);
+    const dritha = new Member("Dritha", gender.F, [chit, amba]);
+    const tritha = new Member("Tritha", gender.F, [chit, amba]);
+
+    const jaya = new Member("Jaya", gender.M);
+    jaya.addSpouse(dritha);
+    dritha.addSpouse(jaya);
+
+    const yodhan = new Member("Yodhan", gender.M, [jaya, dritha]);
+
+     [chit, amba, dritha, tritha, jaya, yodhan].forEach((member) =>
+       family.addMember(member)
+     );
+
+    const yodhanMaternalAunties = family.getRelationship(yodhan, relationship.MATERNAL_AUNT);
+    expect(yodhanMaternalAunties).toEqual([tritha]);
+
+  })
 
 });
 
-it("should return asva as asva is brother of krpi husband", () => {
-  const family = new Family();
-  const kingShan = new Member("King Shan", gender.M);
-  const queenAnga = new Member("Queen Anga", gender.F);
 
-  const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
-  const vyas = new Member("Vyas", gender.M, [kingShan, queenAnga]);
-  const krpi = new Member("Krpi", gender.F);
-
-  vyas.addSpouse(krpi);
-  krpi.addSpouse(vyas);
-
-  [kingShan, queenAnga, asva, vyas, krpi].forEach((member) =>
-    family.addMember(member)
-  );
-
-  const krpiBrotherInLaws = family.getRelationship(
-    krpi,
-    relationship.BROTHER_IN_LAW
-  );
-
-  expect(krpiBrotherInLaws).toEqual([asva]);
-});
