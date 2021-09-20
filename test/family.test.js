@@ -140,8 +140,6 @@ describe('getRelationship', () => {
 
     const kingShan = new Member("King Shan", gender.M);
     const queenAnga = new Member("Queen Anga", gender.F);
-    kingShan.addSpouse(queenAnga);
-    queenAnga.addSpouse(kingShan);
 
     const chit = new Member("Chit", gender.M, [kingShan, queenAnga]);
     const vich = new Member("Vich", gender.M, [kingShan, queenAnga]);
@@ -153,5 +151,60 @@ describe('getRelationship', () => {
 
     const kingShanDaughters = family.getRelationship(kingShan, relationship.DAUGHTER);
     expect(kingShanDaughters).toEqual([satya]);
+  });
+
+  it("should return satvy and krpi as atya sister-in-law when both are spouse of atys's brothers", () => {
+    const family = new Family();
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+
+    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+    const vyas = new Member("Vyas", gender.M, [kingShan, queenAnga]);
+    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
+    const satvy = new Member("Satvy", gender.F);
+    const krpi = new Member("Krpi", gender.F);
+
+    asva.addSpouse(satvy);
+    satvy.addSpouse(asva);
+    vyas.addSpouse(krpi);
+    krpi.addSpouse(vyas);
+
+    [kingShan, queenAnga, asva, atya, satvy, vyas, krpi].forEach((member) =>
+      family.addMember(member)
+    );
+
+    const atyaSisterInLaws = family.getRelationship(atya, relationship.SISTER_IN_LAW);
+
+    expect(atyaSisterInLaws).toEqual([satvy, krpi]);
+  });
+
+  it("should return satya and krpi as atya sister-in-law when satya is spouse of atya brother and krpi is her spouse sister", () => {
+    const family = new Family();
+    const kingShan = new Member("King Shan", gender.M);
+    const queenAnga = new Member("Queen Anga", gender.F);
+
+    const chit = new Member("Chit", gender.M);
+    const amba = new Member("amba", gender.F);
+
+    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.F);
+    asva.addSpouse(satya);
+    satya.addSpouse(asva);
+    const vyas = new Member("Vyas", gender.M, [chit, amba]);
+    const krpi = new Member("Krpi", gender.F, [chit, amba]);
+    vyas.addSpouse(atya);
+    atya.addSpouse(vyas);
+
+    [kingShan, queenAnga, asva, atya, satya, vyas, krpi].forEach((member) =>
+      family.addMember(member)
+    );
+
+    const atyaSisterInLaws = family.getRelationship(
+      atya,
+      relationship.SISTER_IN_LAW
+    );
+
+    expect(atyaSisterInLaws).toEqual([krpi, satya]);
   });
 });

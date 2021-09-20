@@ -24,28 +24,38 @@ class Member {
     return this._gender === gender.F;
   }
 
-  _hasParents(){
+  _hasParents() {
     return this._father && this._mother;
   }
 
-  isSameMember(anotherMember){
-    return this._name === anotherMember._name && this._gender === anotherMember._gender;
+  isSameMember(anotherMember) {
+    return (
+      this._name === anotherMember._name &&
+      this._gender === anotherMember._gender
+    );
   }
 
   isSiblingOf(anotherMember) {
-    if(this.isSameMember(anotherMember)) {
+    if (this.isSameMember(anotherMember)) {
       return false;
     }
-    const doesBothHaveParent = this._hasParents() && anotherMember._hasParents();
+    const doesBothHaveParent =
+      this._hasParents() && anotherMember._hasParents();
     if (doesBothHaveParent) {
-      return this._father.isSameMember(anotherMember._father) && this._mother.isSameMember(anotherMember._mother);
+      return (
+        this._father.isSameMember(anotherMember._father) &&
+        this._mother.isSameMember(anotherMember._mother)
+      );
     }
     return false;
   }
 
-  isChildOf(parentMembertoCheck){
-    if (this._hasParents()){
-      return this._father.isSameMember(parentMembertoCheck) ||this._mother.isSameMember(parentMembertoCheck);
+  isChildOf(parentMembertoCheck) {
+    if (this._hasParents()) {
+      return (
+        this._father.isSameMember(parentMembertoCheck) ||
+        this._mother.isSameMember(parentMembertoCheck)
+      );
     }
 
     return false;

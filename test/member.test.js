@@ -45,7 +45,7 @@ describe("isSiblingOf", () => {
     expect(aria.isSiblingOf(asva)).toBeFalsy();
   });
 
-  it("should return false when given members are same", () => {
+  it("should return false when given member is same", () => {
     const aria = new Member("Aria", gender.F);
     expect(aria.isSiblingOf(aria)).toBeFalsy();
   });
@@ -77,7 +77,6 @@ describe('isChildOf', () => {
    const kingShan = new Member("King Shan", gender.M);
    const aria = new Member("Aria", gender.F);
 
-   expect(aria.isChildOf(kingShan)).toBeFalsy()
+   expect(aria.isChildOf(kingShan)).toBeFalsy();
  });
-
 });
