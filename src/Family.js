@@ -7,12 +7,14 @@ class Family{
     this.members = {};
   }
 
-  addMember(member){
-    this.members[member.name] = member;
+  addMembers(membersToAdd){
+    membersToAdd.forEach(member => {
+      this.members[member.name] = member;
+    })
   }
 
-  addChild(mother, name, gender){
-    const member = this.members[mother.name];
+  addChild(motherName, name, gender){
+    const member = this.members[motherName];
     if(!member){
       throw new MemberNotFoundError();
     }
@@ -26,7 +28,11 @@ class Family{
   }
 
   getMember(memberName){
-    return this.members[memberName];
+    const member = this.members[memberName];
+    if(!member){
+      throw new MemberNotFoundError();
+    }
+    return member;
   }
 
   getRelationship(member, relationship){

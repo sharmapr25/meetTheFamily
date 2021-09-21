@@ -6,7 +6,7 @@ const relationship = require('../src/relationship');
 
 const createFamilyTree = members => {
   const family = new Family();
-  members.forEach(member => family.addMember(member))
+  family.addMembers(members);
   return family;
 }
 
@@ -18,7 +18,7 @@ describe('addChild', () => {
     asva.addSpouse(aria);
     const family = createFamilyTree([aria, asva]);
 
-    family.addChild(aria, 'Chitra', gender.F);
+    family.addChild('Aria', 'Chitra', gender.F);
 
     const expectedResult = new Member('Chitra', gender.F, [asva, aria]);
 
@@ -29,7 +29,7 @@ describe('addChild', () => {
     const family = new Family();
     const aria = new Member("Aria", gender.F);
 
-    expect(() => family.addChild(aria, "Chitra", gender.F)).toThrow(MemberNotFoundError);
+    expect(() => family.addChild("Aria", "Chitra", gender.F)).toThrow(MemberNotFoundError);
   });
 
    it("should throw child addition failed error when try to add chitra as a child of asva who is a male", () => {
@@ -39,7 +39,7 @@ describe('addChild', () => {
      asva.addSpouse(aria);
      const family = createFamilyTree([aria, asva]);
 
-     expect(() => family.addChild(asva, "Chitra", gender.F)).toThrow(
+     expect(() => family.addChild("Asva", "Chitra", gender.F)).toThrow(
        ChildAdditionFailedError
      );
    });
@@ -102,7 +102,7 @@ describe('getRelationship', () => {
   it("should return empty list when asva does not have any daughter", () => {
     const family = new Family();
     const asva = new Member("Asva", gender.M);
-    family.addMember(asva);
+    family.addMembers([asva]);
 
     const asvaDaughters = family.getRelationship(asva, relationship.DAUGHTER);
 
@@ -165,7 +165,10 @@ describe('getRelationship', () => {
 
     const family = createFamilyTree([kingShan, queenAnga, asva, atya, satya, vyas, krpi]);
 
-    const atyaSisterInLaws = family.getRelationship(atya, relationship.SISTER_IN_LAW);
+    const atyaSisterInLaws = family.getRelationship(
+      atya,
+      relationship.SISTER_IN_LAW
+    );
 
     expect(atyaSisterInLaws).toEqual([satya, krpi]);
   });
