@@ -2,7 +2,7 @@ const { InvalidCommandError } = require("./error");
 const relationshipMap = require('./relationship');
 
 const nameConversion = (name) => name.replace("_"," ");
-const printName = members => console.log(members.map(member => member.name).join(" "));
+const getNamesOfMembers = members => members.map(member => member.name).join(" ");
 
 class AddChildInstruction{
   constructor(params){
@@ -10,10 +10,14 @@ class AddChildInstruction{
   }
 
   execute(family){
-    const motherName = nameConversion(this.motherName);
-    const childName = nameConversion(this.childName);
-    family.addChild(motherName, childName, this.gender);
-    console.log('CHILD_ADDITION_SUCCEEDED');
+    try{
+       const motherName = nameConversion(this.motherName);
+      const childName = nameConversion(this.childName);
+      family.addChild(motherName, childName, this.gender);
+      return 'CHILD_ADDITION_SUCCEEDED';
+    }catch(error){
+      return error.getMessage();
+    }
   }
 }
 
@@ -23,14 +27,17 @@ class GetRelationshipInstruction{
   }
 
   execute(family){
-    const memberName = nameConversion(this.name);
-    const member = family.getMember(memberName);
-    const relationship = relationshipMap[this.relationship.toUpperCase().replace(/-/g, "_")];
-    const relatedMembers = family.getRelationship(member, relationship);
-    if(relatedMembers.length > 0){
-      printName(relatedMembers);
-    }else{
-      console.log("NONE");
+    try{
+      const memberName = nameConversion(this.name);
+      const member = family.getMember(memberName);
+      const relationship = relationshipMap[this.relationship.toUpperCase().replace(/-/g, "_")];
+      const relatedMembers = family.getRelationship(member, relationship);
+      if(relatedMembers.length > 0){
+        return getNamesOfMembers(relatedMembers);
+      }
+      return "NONE";
+    }catch(error){
+      return error.getMessage();
     }
   }
 }
