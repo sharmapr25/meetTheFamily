@@ -4,8 +4,8 @@ const path = require('path');
 const createInstruction = require("./src/Instruction");
 const setup = require("./setup");
 
-const filePath = path.resolve(__dirname, 'input.txt');
-
+[,,fileName] = process.argv
+const filePath = path.resolve(__dirname, fileName || 'input.txt');
 const family = setup();
 
 const readInterface = readline.createInterface({
