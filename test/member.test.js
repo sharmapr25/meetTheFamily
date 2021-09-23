@@ -1,4 +1,4 @@
-const Member = require("../src/Member");
+const Member = require("../src/member");
 const gender = require("../src/gender");
 
 describe('isFemale', () => {

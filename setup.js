@@ -1,5 +1,5 @@
-const Family = require('./src/Family');
-const Member = require("./src/Member");
+const Family = require('./src/family');
+const Member = require("./src/member");
 const gender = require('./src/gender');
 
 addSpouse = (person, spouse) => {

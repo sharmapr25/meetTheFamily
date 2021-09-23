@@ -1,5 +1,5 @@
 const { InvalidCommandError } = require("../src/error");
-const Family = require("../src/Family");
+const Family = require("../src/family");
 const gender = require("../src/gender");
 const createInstruction = require("../src/instruction");
 const Member = require("../src/member");

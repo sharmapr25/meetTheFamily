@@ -1,7 +1,7 @@
 const {MemberNotFoundError, ChildAdditionFailedError} = require('../src/error/index');
-const Family = require('../src/Family');
+const Family = require('../src/family');
 const gender = require("../src/gender");
-const Member = require("../src/Member");
+const Member = require("../src/member");
 const relationship = require('../src/relationship');
 
 const createFamilyTree = members => {
