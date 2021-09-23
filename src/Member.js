@@ -21,7 +21,7 @@ class Member {
   }
 
   isFemale() {
-    return this._gender === gender.F;
+    return this._gender === gender.FEMALE;
   }
 
   _hasParents() {

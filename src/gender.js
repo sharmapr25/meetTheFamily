@@ -1,4 +1,4 @@
-const gender = { M: "male", F: "female" };
+const gender = { MALE: "male", FEMALE: "female" };
 Object.freeze(gender);
 
 module.exports = gender;

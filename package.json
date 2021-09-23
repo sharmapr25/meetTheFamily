@@ -2,8 +2,9 @@
   "name": "meet_the_family",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "geektrust.js",
   "scripts": {
+    "start": "node geektrust.js",
     "test": "jest"
   },
   "author": "",

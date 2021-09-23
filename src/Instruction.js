@@ -1,5 +1,6 @@
 const { InvalidCommandError } = require("./error");
 const relationshipMap = require('./relationship');
+const gender = require('./gender');
 
 const nameConversion = (name) => name.replace("_"," ");
 const getNamesOfMembers = members => members.map(member => member.name).join(" ");
@@ -11,9 +12,9 @@ class AddChildInstruction{
 
   execute(family){
     try{
-       const motherName = nameConversion(this.motherName);
+      const motherName = nameConversion(this.motherName);
       const childName = nameConversion(this.childName);
-      family.addChild(motherName, childName, this.gender);
+      family.addChild(motherName, childName, gender[this.gender.toUpperCase()]);
       return 'CHILD_ADDITION_SUCCEEDED';
     }catch(error){
       return error.getMessage();

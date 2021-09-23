@@ -12,34 +12,34 @@ const createFamilyTree = members => {
 
 describe('addChild', () => {
   it("should add Chitra as Aria's child when aria is already member of family tree", () => {
-    const aria = new Member('Aria', gender.F);
-    const asva = new Member("Asva", gender.M);
+    const aria = new Member('Aria', gender.FEMALE);
+    const asva = new Member("Asva", gender.MALE);
     aria.addSpouse(asva);
     asva.addSpouse(aria);
     const family = createFamilyTree([aria, asva]);
 
-    family.addChild('Aria', 'Chitra', gender.F);
+    family.addChild('Aria', 'Chitra', gender.FEMALE);
 
-    const expectedResult = new Member('Chitra', gender.F, [asva, aria]);
+    const expectedResult = new Member('Chitra', gender.FEMALE, [asva, aria]);
 
     expect(family.getMember('Chitra')).toEqual(expectedResult);
   });
 
   it("should throw member not found error when add Chitra as aria's child where aria doesn't exist in family tree", () => {
     const family = new Family();
-    const aria = new Member("Aria", gender.F);
+    const aria = new Member("Aria", gender.FEMALE);
 
-    expect(() => family.addChild("Aria", "Chitra", gender.F)).toThrow(MemberNotFoundError);
+    expect(() => family.addChild("Aria", "Chitra", gender.FEMALE)).toThrow(MemberNotFoundError);
   });
 
    it("should throw child addition failed error when try to add chitra as a child of asva who is a male", () => {
-     const aria = new Member("Aria", gender.F);
-     const asva = new Member("Asva", gender.M);
+     const aria = new Member("Aria", gender.FEMALE);
+     const asva = new Member("Asva", gender.MALE);
      aria.addSpouse(asva);
      asva.addSpouse(aria);
      const family = createFamilyTree([aria, asva]);
 
-     expect(() => family.addChild("Asva", "Chitra", gender.F)).toThrow(
+     expect(() => family.addChild("Asva", "Chitra", gender.FEMALE)).toThrow(
        ChildAdditionFailedError
      );
    });
@@ -47,10 +47,10 @@ describe('addChild', () => {
 
 describe('getRelationship', () => {
   it('should return asva when ask for atya siblings', () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
-    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
-    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
+    const atya = new Member("Atya", gender.FEMALE, [kingShan, queenAnga]);
+    const asva = new Member("Asva", gender.MALE, [kingShan, queenAnga]);
     const family = createFamilyTree([kingShan, queenAnga, atya, asva]);
 
     const atyaSiblings = family.getRelationship(atya, relationship.SIBLINGS);
@@ -59,11 +59,11 @@ describe('getRelationship', () => {
   });
 
   it("should return asva and aria when satya has those two siblings", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
-    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
-    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
-    const satya = new Member("Satya", gender.F, [kingShan, queenAnga]);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
+    const atya = new Member("Atya", gender.FEMALE, [kingShan, queenAnga]);
+    const asva = new Member("Asva", gender.MALE, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.FEMALE, [kingShan, queenAnga]);
     const family = createFamilyTree([kingShan, queenAnga, atya, asva, satya]);
 
     const satyaSiblings = family.getRelationship(satya, relationship.SIBLINGS);
@@ -72,11 +72,11 @@ describe('getRelationship', () => {
   });
 
   it("should return asva when ask for king shan's son", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
     kingShan.addSpouse(queenAnga);
     queenAnga.addSpouse(kingShan);
-    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
+    const asva = new Member("Asva", gender.MALE, [kingShan, queenAnga]);
     const family = createFamilyTree([kingShan, queenAnga, asva]);
 
     const kingShanSon = family.getRelationship(kingShan, relationship.SON);
@@ -85,13 +85,13 @@ describe('getRelationship', () => {
   });
 
   it("should return chit and vich when ask for king shan sons and king shan has three children", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
     kingShan.addSpouse(queenAnga);
     queenAnga.addSpouse(kingShan);
-    const chit = new Member("Chit", gender.M, [kingShan, queenAnga]);
-    const vich = new Member("Vich", gender.M, [kingShan, queenAnga]);
-    const satya = new Member("Satya", gender.F, [kingShan, queenAnga]);
+    const chit = new Member("Chit", gender.MALE, [kingShan, queenAnga]);
+    const vich = new Member("Vich", gender.MALE, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.FEMALE, [kingShan, queenAnga]);
     const family = createFamilyTree([kingShan, queenAnga, chit, vich, satya]);
 
     const kingShanSons = family.getRelationship(kingShan, relationship.SON);
@@ -101,7 +101,7 @@ describe('getRelationship', () => {
 
   it("should return empty list when asva does not have any daughter", () => {
     const family = new Family();
-    const asva = new Member("Asva", gender.M);
+    const asva = new Member("Asva", gender.MALE);
     family.addMembers([asva]);
 
     const asvaDaughters = family.getRelationship(asva, relationship.DAUGHTER);
@@ -110,12 +110,12 @@ describe('getRelationship', () => {
   });
 
   it("should return satya when ask for king shan daugthers and king shan has three children", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
 
-    const chit = new Member("Chit", gender.M, [kingShan, queenAnga]);
-    const vich = new Member("Vich", gender.M, [kingShan, queenAnga]);
-    const satya = new Member("Satya", gender.F, [kingShan, queenAnga]);
+    const chit = new Member("Chit", gender.MALE, [kingShan, queenAnga]);
+    const vich = new Member("Vich", gender.MALE, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.FEMALE, [kingShan, queenAnga]);
 
     const family = createFamilyTree([kingShan, queenAnga, chit, vich, satya]);
 
@@ -124,14 +124,14 @@ describe('getRelationship', () => {
   });
 
   it("should return satvy and krpi as atya sister-in-law when both are spouse of atys's brothers", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
 
-    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
-    const vyas = new Member("Vyas", gender.M, [kingShan, queenAnga]);
-    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
-    const satvy = new Member("Satvy", gender.F);
-    const krpi = new Member("Krpi", gender.F);
+    const asva = new Member("Asva", gender.MALE, [kingShan, queenAnga]);
+    const vyas = new Member("Vyas", gender.MALE, [kingShan, queenAnga]);
+    const atya = new Member("Atya", gender.FEMALE, [kingShan, queenAnga]);
+    const satvy = new Member("Satvy", gender.FEMALE);
+    const krpi = new Member("Krpi", gender.FEMALE);
 
     asva.addSpouse(satvy);
     satvy.addSpouse(asva);
@@ -146,19 +146,19 @@ describe('getRelationship', () => {
   });
 
   it("should return satya and krpi as atya sister-in-law when satya is spouse of atya brother and krpi is sister of her spouse", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
-    const chit = new Member("Chit", gender.M);
-    const amba = new Member("amba", gender.F);
-    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
-    const atya = new Member("Atya", gender.F, [kingShan, queenAnga]);
-    const satya = new Member("Satya", gender.F);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
+    const chit = new Member("Chit", gender.MALE);
+    const amba = new Member("amba", gender.FEMALE);
+    const asva = new Member("Asva", gender.MALE, [kingShan, queenAnga]);
+    const atya = new Member("Atya", gender.FEMALE, [kingShan, queenAnga]);
+    const satya = new Member("Satya", gender.FEMALE);
 
     asva.addSpouse(satya);
     satya.addSpouse(asva);
 
-    const vyas = new Member("Vyas", gender.M, [chit, amba]);
-    const krpi = new Member("Krpi", gender.F, [chit, amba]);
+    const vyas = new Member("Vyas", gender.MALE, [chit, amba]);
+    const krpi = new Member("Krpi", gender.FEMALE, [chit, amba]);
 
     vyas.addSpouse(atya);
     atya.addSpouse(vyas);
@@ -174,11 +174,11 @@ describe('getRelationship', () => {
   });
 
   it("should return asva as asva is brother of krpi husband", () => {
-    const kingShan = new Member("King Shan", gender.M);
-    const queenAnga = new Member("Queen Anga", gender.F);
-    const asva = new Member("Asva", gender.M, [kingShan, queenAnga]);
-    const vyas = new Member("Vyas", gender.M, [kingShan, queenAnga]);
-    const krpi = new Member("Krpi", gender.F);
+    const kingShan = new Member("King Shan", gender.MALE);
+    const queenAnga = new Member("Queen Anga", gender.FEMALE);
+    const asva = new Member("Asva", gender.MALE, [kingShan, queenAnga]);
+    const vyas = new Member("Vyas", gender.MALE, [kingShan, queenAnga]);
+    const krpi = new Member("Krpi", gender.FEMALE);
 
     vyas.addSpouse(krpi);
     krpi.addSpouse(vyas);
@@ -192,12 +192,12 @@ describe('getRelationship', () => {
 
   it("should return tritha as maternal-aunt for yodhan as she is sister of his mother dritha",
   () => {
-    const chit = new Member("Chit", gender.M);
-    const amba = new Member("Amba", gender.F);
-    const dritha = new Member("Dritha", gender.F, [chit, amba]);
-    const tritha = new Member("Tritha", gender.F, [chit, amba]);
-    const jaya = new Member("Jaya", gender.M);
-    const yodhan = new Member("Yodhan", gender.M, [jaya, dritha]);
+    const chit = new Member("Chit", gender.MALE);
+    const amba = new Member("Amba", gender.FEMALE);
+    const dritha = new Member("Dritha", gender.FEMALE, [chit, amba]);
+    const tritha = new Member("Tritha", gender.FEMALE, [chit, amba]);
+    const jaya = new Member("Jaya", gender.MALE);
+    const yodhan = new Member("Yodhan", gender.MALE, [jaya, dritha]);
 
     jaya.addSpouse(dritha);
     dritha.addSpouse(jaya);
@@ -210,12 +210,12 @@ describe('getRelationship', () => {
   })
 
   it("should return tritha as paternal-aunt for yodhan as she is sister of his father jaya", () => {
-    const chit = new Member("Chit", gender.M);
-    const amba = new Member("Amba", gender.F);
-    const tritha = new Member("Tritha", gender.F, [chit, amba]);
-    const jaya = new Member("Jaya", gender.M, [chit, amba]);
-    const dritha = new Member("Dritha", gender.F);
-    const yodhan = new Member("Yodhan", gender.M, [jaya, dritha]);
+    const chit = new Member("Chit", gender.MALE);
+    const amba = new Member("Amba", gender.FEMALE);
+    const tritha = new Member("Tritha", gender.FEMALE, [chit, amba]);
+    const jaya = new Member("Jaya", gender.MALE, [chit, amba]);
+    const dritha = new Member("Dritha", gender.FEMALE);
+    const yodhan = new Member("Yodhan", gender.MALE, [jaya, dritha]);
 
     jaya.addSpouse(dritha);
     dritha.addSpouse(jaya);
@@ -229,13 +229,13 @@ describe('getRelationship', () => {
   });
 
   it("should return ish as paternal-uncle for yodhan as he is brother of his father jaya", () => {
-    const chit = new Member("Chit", gender.M);
-    const amba = new Member("Amba", gender.F);
-    const tritha = new Member("Tritha", gender.F, [chit, amba]);
-    const ish = new Member("Ish", gender.M, [chit, amba]);
-    const jaya = new Member("Jaya", gender.M, [chit, amba]);
-    const dritha = new Member("Dritha", gender.F);
-    const yodhan = new Member("Yodhan", gender.M, [jaya, dritha]);
+    const chit = new Member("Chit", gender.MALE);
+    const amba = new Member("Amba", gender.FEMALE);
+    const tritha = new Member("Tritha", gender.FEMALE, [chit, amba]);
+    const ish = new Member("Ish", gender.MALE, [chit, amba]);
+    const jaya = new Member("Jaya", gender.MALE, [chit, amba]);
+    const dritha = new Member("Dritha", gender.FEMALE);
+    const yodhan = new Member("Yodhan", gender.MALE, [jaya, dritha]);
 
     jaya.addSpouse(dritha);
     dritha.addSpouse(jaya);
@@ -252,6 +252,27 @@ describe('getRelationship', () => {
 
     expect(yodhanPaternalUncles).toEqual([ish]);
     expect(yodhanPaternalAunties).toEqual([tritha]);
+  });
+
+  it("should return atya and yaya as sister-in-law for satvy as they are sisters of her husband", () => {
+    const vyan = new Member("Vyan", gender.MALE);
+    const satya = new Member("Satya", gender.FEMALE);
+    vyan.addSpouse(satya);
+    satya.addSpouse(vyan);
+    const atya = new Member("Atya", gender.FEMALE, [vyan, satya]);
+    const asva = new Member("Asva", gender.MALE, [vyan, satya]);
+    const satvy = new Member("Satvy", gender.FEMALE);
+    asva.addSpouse(satvy);
+    satvy.addSpouse(asva);
+
+    const family = createFamilyTree([vyan, satya, atya, asva, satvy]);
+
+    family.addChild('Satya', 'Yaya', gender.FEMALE);
+
+    const yaya = new Member('Yaya', gender.FEMALE, [vyan, satya]);
+
+    const satvySisterInLaw = family.getRelationship(satvy, relationship.SISTER_IN_LAW);
+    expect(satvySisterInLaw).toEqual([atya, yaya])
   });
 
 });
