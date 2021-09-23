@@ -43,6 +43,14 @@ describe('addChild', () => {
        ChildAdditionFailedError
      );
    });
+
+   it("should throw child addition failed error when try to add chitra as a child of aria who doesn't have any spouse", () => {
+     const aria = new Member("Aria", gender.FEMALE);
+     const family = createFamilyTree([aria]);
+     expect(() => family.addChild("Aria", "Chitra", gender.FEMALE)).toThrow(
+       ChildAdditionFailedError
+     );
+   });
 });
 
 describe('getRelationship', () => {

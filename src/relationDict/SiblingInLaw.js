@@ -1,6 +1,6 @@
 class SiblingInLaw {
   constructor(inLawValidation){
-    this.inLawValidation = inLawValidation;
+    this._inLawValidation = inLawValidation;
   }
 
   _isSpouseSibling(currentMember, member){
@@ -13,7 +13,7 @@ class SiblingInLaw {
 
   of(members, currentMember) {
     return Object.values(members).filter((member) => {
-      if (this.inLawValidation(member)) {
+      if (this._inLawValidation(member)) {
         return (
           this._isSpouseSibling(currentMember, member) ||
           this._isSiblingSpouse(currentMember, member)

@@ -1,34 +1,34 @@
 const { ChildAdditionFailedError } = require("./error");
-const MemberNotFoundError = require("./error/MemberNotFoundError");
-const Member = require("./Member");
+const MemberNotFoundError = require("./error/memberNotFoundError");
+const Member = require("./member");
 
 class Family{
   constructor(){
-    this.members = {};
+    this._members = {};
   }
 
   addMembers(membersToAdd){
     membersToAdd.forEach(member => {
-      this.members[member.name] = member;
+      this._members[member.name] = member;
     })
   }
 
   addChild(motherName, name, gender){
-    const member = this.members[motherName];
+    const member = this._members[motherName];
     if(!member){
       throw new MemberNotFoundError();
     }
-    if(!member.isFemale()){
+    if(!member.isFemale() || !member.spouse){
       throw new ChildAdditionFailedError();
     }
-    if(member.spouse){
-      const newMember = new Member(name, gender, [member.spouse, member]);
-      this.members[name] = newMember;
-    }
+
+    const newMember = new Member(name, gender, [member.spouse, member]);
+    this._members[name] = newMember;
+  
   }
 
   getMember(memberName){
-    const member = this.members[memberName];
+    const member = this._members[memberName];
     if(!member){
       throw new MemberNotFoundError();
     }
@@ -36,7 +36,7 @@ class Family{
   }
 
   getRelationship(member, relationship){
-    return relationship.of(this.members, member);
+    return relationship.of(this._members, member);
   }
 }
 

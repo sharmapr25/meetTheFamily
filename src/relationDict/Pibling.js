@@ -1,14 +1,14 @@
 class Pibling{
   constructor(genderValidation, parentRelationValidation){
-    this.genderValidation = genderValidation;
-    this.parentRelationValidation = parentRelationValidation;
+    this._genderValidation = genderValidation;
+    this._parentRelationValidation = parentRelationValidation;
   }
 
   of(members, currentMember){
      return Object.values(members).filter((member) => {
-       if (this.genderValidation(member)) {
+       if (this._genderValidation(member)) {
          return currentMember
-           .getParentBasedOnValidation(this.parentRelationValidation)
+           .getParentBasedOnValidation(this._parentRelationValidation)
            .isSiblingOf(member);
        }
        return false;

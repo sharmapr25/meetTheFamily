@@ -1,7 +1,7 @@
 const {createReadStream} = require('fs');
 const readline = require("readline");
 const path = require('path');
-const createInstruction = require("./src/Instruction");
+const createInstruction = require("./src/instruction");
 const setup = require("./setup");
 
 const inputFileName = process.argv[2];
@@ -15,7 +15,11 @@ const readInterface = readline.createInterface({
 
 readInterface.on("line", (line) => {
   if (line) {
-    const instruction = createInstruction(line);
-    console.log(instruction.execute(family));
+    try{
+      const instruction = createInstruction(line);
+      console.log(instruction.execute(family));
+    }catch(error){
+      console.log(error.message);
+    }
   }
 });

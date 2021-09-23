@@ -1,48 +1,42 @@
 const { InvalidCommandError } = require("./error");
 const relationshipMap = require('./relationship');
-const gender = require('./gender');
+const genderMap = require('./gender');
 
 const nameConversion = (name) => name.replace("_"," ");
 const getNamesOfMembers = members => members.map(member => member.name).join(" ");
 
+
 class AddChildInstruction{
   constructor(params){
-    [this.motherName, this.childName, this.gender] = params;
+    [this._motherName, this._childName, this._gender] = params;
   }
 
   execute(family){
-    try{
-      const motherName = nameConversion(this.motherName);
-      const childName = nameConversion(this.childName);
-      family.addChild(motherName, childName, gender[this.gender.toUpperCase()]);
-      return 'CHILD_ADDITION_SUCCEEDED';
-    }catch(error){
-      return error.getMessage();
-    }
+    const motherName = nameConversion(this._motherName);
+    const childName = nameConversion(this._childName);
+    family.addChild(motherName, childName, genderMap[this._gender.toUpperCase()]);
+    return 'CHILD_ADDITION_SUCCEEDED';
   }
+
 }
 
-class GetRelationshipInstruction{
-  constructor(params){
-    [this.name, this.relationship] = params;
+class GetRelationshipInstruction {
+  constructor(params) {
+    [this._name, this._relationship] = params;
   }
 
-  execute(family){
-    try{
-      const memberName = nameConversion(this.name);
-      const member = family.getMember(memberName);
-      const relationship = relationshipMap[this.relationship.toUpperCase().replace(/-/g, "_")];
-      const relatedMembers = family.getRelationship(member, relationship);
-      if(relatedMembers.length > 0){
-        return getNamesOfMembers(relatedMembers);
-      }
-      return "NONE";
-    }catch(error){
-      return error.getMessage();
-    }
+  getRelationship(){
+    return relationshipMap[this._relationship.toUpperCase().replace(/-/g, "_")];
   }
+
+  execute(family) {
+    const member = family.getMember(nameConversion(this._name));
+    const relationship = this.getRelationship();
+    const relatedMembers = family.getRelationship(member, relationship);
+    return relatedMembers.length > 0 ? getNamesOfMembers(relatedMembers): "NONE";
+  }
+  
 }
-
 
 const instructions = {
   ADD_CHILD: AddChildInstruction,

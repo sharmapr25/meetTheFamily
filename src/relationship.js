@@ -1,7 +1,7 @@
-const Child = require("./relationDict/Child");
-const Pibling = require("./relationDict/Pibling");
-const SiblingInLaw = require("./relationDict/SiblingInLaw");
-const siblings = require("./relationDict/Siblings");
+const Child = require("./relationDict/child");
+const Pibling = require("./relationDict/pibling");
+const SiblingInLaw = require("./relationDict/siblingInLaw");
+const siblings = require("./relationDict/siblings");
 
 const femaleValidation = (member) => member.isFemale();
 const maleValidation = (member) => !member.isFemale();

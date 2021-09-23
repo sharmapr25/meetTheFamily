@@ -1,11 +1,11 @@
 class Child {
   constructor(childValidation) {
-    this.childValidation = childValidation;
+    this._childValidation = childValidation;
   }
 
   of(members, currentMember) {
     return Object.values(members).filter(
-      (member) => this.childValidation(member) && member.isChildOf(currentMember)
+      (member) => this._childValidation(member) && member.isChildOf(currentMember)
     );
   }
 }

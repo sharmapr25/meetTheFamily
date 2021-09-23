@@ -1,10 +1,11 @@
 class InvalidCommandError extends Error {
   constructor() {
     super();
+    this._message = "INVALID_INPUT";
   }
 
-  getMessage() {
-    return "INVALID_INPUT";
+  get message() {
+    return this._message;
   }
 }
 

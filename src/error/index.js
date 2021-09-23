@@ -1,6 +1,6 @@
-const ChildAdditionFailedError = require("./ChildAdditionFailedError")
-const MemberNotFoundError = require("./MemberNotFoundError")
-const InvalidCommandError = require("./InvalidCommandError");
+const ChildAdditionFailedError = require("./childAdditionFailedError")
+const MemberNotFoundError = require("./memberNotFoundError")
+const InvalidCommandError = require("./invalidCommandError");
 
 
 module.exports = { MemberNotFoundError, ChildAdditionFailedError, InvalidCommandError }
