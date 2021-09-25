@@ -75,5 +75,12 @@ describe("GetRelationshipInstruction", () => {
     const message = instruction.execute(family);
     expect(message).toBe('Kavya');
   })
+
+  it("should return NONE when naveen doesn't have a son", () => {
+    const instruction = createInstruction("GET_RELATIONSHIP Naveen Son");
+    const message = instruction.execute(family);
+
+    expect(message).toBe("NONE");
+  })
 });
 

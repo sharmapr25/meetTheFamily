@@ -282,7 +282,23 @@ describe('getRelationship', () => {
     const satvySisterInLaw = family.getRelationship(satvy, relationship.SISTER_IN_LAW);
     expect(satvySisterInLaw).toEqual([atya, yaya])
   });
+});
 
+describe("getMember", () => {
+  it('should return Satya when there is a member in the family with satya name', () => {
+    const satya = new Member("Satya", gender.FEMALE);
+    const family = createFamilyTree([satya]);
+
+    const result = family.getMember('Satya');
+
+    expect(result).toBe(satya);
+  });
+
+  it("should throw memberNotFoundError when there is no member with satya name", () => {
+    const family = createFamilyTree([]);
+
+    expect(() => family.getMember("Satya")).toThrow(MemberNotFoundError);
+  });
 });
 
 
