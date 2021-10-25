@@ -27,7 +27,6 @@ describe('addChild', () => {
 
   it("should throw member not found error when add Chitra as aria's child where aria doesn't exist in family tree", () => {
     const family = new Family();
-    const aria = new Member("Aria", gender.FEMALE);
 
     expect(() => family.addChild("Aria", "Chitra", gender.FEMALE)).toThrow(MemberNotFoundError);
   });
