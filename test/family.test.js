@@ -1,3 +1,4 @@
+const assert = require("assert");
 const {MemberNotFoundError, ChildAdditionFailedError} = require('../src/error/index');
 const Family = require('../src/family');
 const gender = require("../src/gender");
@@ -22,13 +23,13 @@ describe('addChild', () => {
 
     const expectedResult = new Member('Chitra', gender.FEMALE, [asva, aria]);
 
-    expect(family.getMember('Chitra')).toEqual(expectedResult);
+    assert.deepEqual(family.getMember('Chitra'), expectedResult);
   });
 
   it("should throw member not found error when add Chitra as aria's child where aria doesn't exist in family tree", () => {
     const family = new Family();
 
-    expect(() => family.addChild("Aria", "Chitra", gender.FEMALE)).toThrow(MemberNotFoundError);
+    assert.throws(() => family.addChild("Aria", "Chitra", gender.FEMALE),MemberNotFoundError);
   });
 
    it("should throw child addition failed error when try to add chitra as a child of asva who is a male", () => {
@@ -38,7 +39,7 @@ describe('addChild', () => {
      asva.addSpouse(aria);
      const family = createFamilyTree([aria, asva]);
 
-     expect(() => family.addChild("Asva", "Chitra", gender.FEMALE)).toThrow(
+     assert.throws(() => family.addChild("Asva", "Chitra", gender.FEMALE),
        ChildAdditionFailedError
      );
    });
@@ -46,7 +47,7 @@ describe('addChild', () => {
    it("should throw child addition failed error when try to add chitra as a child of aria who doesn't have any spouse", () => {
      const aria = new Member("Aria", gender.FEMALE);
      const family = createFamilyTree([aria]);
-     expect(() => family.addChild("Aria", "Chitra", gender.FEMALE)).toThrow(
+     assert.throws(() => family.addChild("Aria", "Chitra", gender.FEMALE),
        ChildAdditionFailedError
      );
    });
@@ -62,7 +63,7 @@ describe('getRelationship', () => {
 
     const atyaSiblings = family.getRelationship(atya, relationship.SIBLINGS);
 
-    expect(atyaSiblings).toEqual([asva]);
+    assert.deepEqual(atyaSiblings, [asva]);
   });
 
   it("should return asva and aria when satya has those two siblings", () => {
@@ -75,7 +76,7 @@ describe('getRelationship', () => {
 
     const satyaSiblings = family.getRelationship(satya, relationship.SIBLINGS);
 
-    expect(satyaSiblings).toEqual([atya, asva]);
+    assert.deepEqual(satyaSiblings, [atya, asva]);
   });
 
   it("should return asva when ask for king shan's son", () => {
@@ -88,7 +89,7 @@ describe('getRelationship', () => {
 
     const kingShanSon = family.getRelationship(kingShan, relationship.SON);
 
-    expect(kingShanSon).toEqual([asva]);
+    assert.deepEqual(kingShanSon, [asva]);
   });
 
   it("should return chit and vich when ask for king shan sons and king shan has three children", () => {
@@ -103,7 +104,7 @@ describe('getRelationship', () => {
 
     const kingShanSons = family.getRelationship(kingShan, relationship.SON);
 
-    expect(kingShanSons).toEqual([chit, vich]);
+    assert.deepEqual(kingShanSons, [chit, vich]);
   });
 
   it("should return empty list when asva does not have any daughter", () => {
@@ -113,7 +114,7 @@ describe('getRelationship', () => {
 
     const asvaDaughters = family.getRelationship(asva, relationship.DAUGHTER);
 
-    expect(asvaDaughters).toEqual([]);
+    assert.deepEqual(asvaDaughters, []);
   });
 
   it("should return satya when ask for king shan daugthers and king shan has three children", () => {
@@ -127,7 +128,7 @@ describe('getRelationship', () => {
     const family = createFamilyTree([kingShan, queenAnga, chit, vich, satya]);
 
     const kingShanDaughters = family.getRelationship(kingShan, relationship.DAUGHTER);
-    expect(kingShanDaughters).toEqual([satya]);
+    assert.deepEqual(kingShanDaughters, [satya]);
   });
 
   it("should return satvy and krpi as atya sister-in-law when both are spouse of atys's brothers", () => {
@@ -149,7 +150,7 @@ describe('getRelationship', () => {
 
     const atyaSisterInLaws = family.getRelationship(atya, relationship.SISTER_IN_LAW);
 
-    expect(atyaSisterInLaws).toEqual([satvy, krpi]);
+    assert.deepEqual(atyaSisterInLaws, [satvy, krpi]);
   });
 
   it("should return satya and krpi as atya sister-in-law when satya is spouse of atya brother and krpi is sister of her spouse", () => {
@@ -177,7 +178,7 @@ describe('getRelationship', () => {
       relationship.SISTER_IN_LAW
     );
 
-    expect(atyaSisterInLaws).toEqual([satya, krpi]);
+    assert.deepEqual(atyaSisterInLaws, [satya, krpi]);
   });
 
   it("should return asva as asva is brother of krpi husband", () => {
@@ -194,7 +195,7 @@ describe('getRelationship', () => {
 
     const krpiBrotherInLaws = family.getRelationship(krpi, relationship.BROTHER_IN_LAW);
 
-    expect(krpiBrotherInLaws).toEqual([asva]);
+    assert.deepEqual(krpiBrotherInLaws, [asva]);
   });
 
   it("should return tritha as maternal-aunt for yodhan as she is sister of his mother dritha",
@@ -213,7 +214,7 @@ describe('getRelationship', () => {
 
     const yodhanMaternalAunties = family.getRelationship(yodhan, relationship.MATERNAL_AUNT);
 
-    expect(yodhanMaternalAunties).toEqual([tritha]);
+    assert.deepEqual(yodhanMaternalAunties, [tritha]);
   })
 
   it("should return tritha as paternal-aunt for yodhan as she is sister of his father jaya", () => {
@@ -231,8 +232,8 @@ describe('getRelationship', () => {
     const yodhanPaternalAunties = family.getRelationship(yodhan, relationship.PATERNAL_AUNT);
     const yodhanMaternalAunties = family.getRelationship(yodhan, relationship.MATERNAL_AUNT);
 
-    expect(yodhanMaternalAunties).toEqual([]);
-    expect(yodhanPaternalAunties).toEqual([tritha]);
+    assert.deepEqual(yodhanMaternalAunties, []);
+    assert.deepEqual(yodhanPaternalAunties, [tritha]);
   });
 
   it("should return ish as paternal-uncle for yodhan as he is brother of his father jaya", () => {
@@ -257,8 +258,8 @@ describe('getRelationship', () => {
       relationship.PATERNAL_UNCLE
     );
 
-    expect(yodhanPaternalUncles).toEqual([ish]);
-    expect(yodhanPaternalAunties).toEqual([tritha]);
+    assert.deepEqual(yodhanPaternalUncles, [ish]);
+    assert.deepEqual(yodhanPaternalAunties, [tritha]);
   });
 
   it("should return atya and yaya as sister-in-law for satvy as they are sisters of her husband", () => {
@@ -279,7 +280,7 @@ describe('getRelationship', () => {
     const yaya = new Member('Yaya', gender.FEMALE, [vyan, satya]);
 
     const satvySisterInLaw = family.getRelationship(satvy, relationship.SISTER_IN_LAW);
-    expect(satvySisterInLaw).toEqual([atya, yaya])
+    assert.deepEqual(satvySisterInLaw, [atya, yaya])
   });
 });
 
@@ -290,13 +291,13 @@ describe("getMember", () => {
 
     const result = family.getMember('Satya');
 
-    expect(result).toBe(satya);
+    assert.equal(result, satya);
   });
 
   it("should throw memberNotFoundError when there is no member with satya name", () => {
     const family = createFamilyTree([]);
 
-    expect(() => family.getMember("Satya")).toThrow(MemberNotFoundError);
+    assert.throws(() => family.getMember("Satya"),MemberNotFoundError);
   });
 });
 
