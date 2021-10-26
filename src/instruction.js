@@ -35,7 +35,7 @@ class GetRelationshipInstruction {
     const relatedMembers = family.getRelationship(member, relationship);
     return relatedMembers.length > 0 ? getNamesOfMembers(relatedMembers): "NONE";
   }
-  
+
 }
 
 const instructions = {
